@@ -1,12 +1,27 @@
 #!/usr/bin/python3
 """
-script based on set_static_web.sh that distributes an
-archive to web servers
+script based on deploy_web_static.py that creates and
+distributes an archive to web server
 """
 
-from fabric.api import put, run, env
-from os.path import exists
+from fabric.api import env, local, put, run
+from datetime import datetime
+from os.path import exists, isdir
 env.hosts = ['34.44.127.228', '34.44.206.195']
+
+
+def do_pach():
+    """generates a tgz archive"""
+    try:
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        if isdir("versions") is False:
+            local("mkdir versions")
+        files = "versions/web_static_{}.tgz".format(date)
+        local("tar -cvzf {} {} web_static".format(file_name))
+        return files
+    except:
+        return None
+
 
 def do_deploy(archive_path):
     """destributes an archive to web server"""
@@ -27,3 +42,11 @@ def do_deploy(archive_path):
         return True
     except:
         return False
+
+
+def deploy():
+    """creates and distributes an archive to the web servers"""
+    archive_path = do_pack()
+    if archive_path is None:
+        return False
+    return do_deploy(archive_path)
