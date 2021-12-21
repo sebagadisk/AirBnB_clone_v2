@@ -289,13 +289,14 @@ class HBNBCommand(cmd.Cmd):
         if len(parsed_args) == 0:
             print("** class name missing **")
             return False
-        elif parsed_args[0] in self.classnames:
-                new_obj = eval(parsed_args[0])()
-                print(new_obj.id)
-                storage.new(new_obj)
-                storage.save()
-        elif args not in self.classnames:
+        if parsed_args[0] in self.classnames:
+                new_obj = self._key_value_parser(parsed_args[1:])
+                instance = self.classnames[parsed_args[0]](**new_obj)
+        else:
             print("** class doesn't exist **")
+            return False
+        print(storage.id)
+        storage.save()
 
 
 if __name__ == '__main__':
