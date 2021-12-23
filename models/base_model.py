@@ -18,7 +18,7 @@ if models.storage_t == "db":
 else:
     Base = object
 
-    
+
 class BaseModel:
     """Base for all AirBnB website projects"""
 
