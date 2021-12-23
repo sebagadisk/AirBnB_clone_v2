@@ -24,7 +24,7 @@ class DBStorage:
     """definition of class DBStorage"""
     __engine = None
     __session = None
-    
+
     def __init__(self):
         HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
@@ -46,7 +46,7 @@ class DBStorage:
             if cls is None or cls is classes[c] or cls is c:
                 objs = self.__session.query(classes[c]).all()
                 for obj in objs:
-                    key = abj.__class__.__name__+ '.' + obj.id
+                    key = obj.__class__.__name__+ '.' + obj.id
                     dictionary[key] = obj
         return (dictionary)
 
