@@ -11,11 +11,14 @@ import sqlalchemy
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
+time = "%Y-%m-%dT%H:%M:%S.%f"
+
 if models.storage_t == "db":
     Base = declarative_base()
 else:
     Base = object
 
+    
 class BaseModel:
     """Base for all AirBnB website projects"""
 
