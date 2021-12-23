@@ -4,7 +4,7 @@ defines all common attributes/mothods for other classes
 """
 
 from datetime import datetime
-from uuid import uuid4
+import uuid
 from datetime import datetime
 import models
 import sqlalchemy
@@ -21,8 +21,6 @@ else:
     
 class BaseModel:
     """Base for all AirBnB website projects"""
-
-    TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
 
     if models.storage_t == "db":
         id = Column(String(60), primary_key = True)
