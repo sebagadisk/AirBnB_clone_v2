@@ -1,29 +1,22 @@
 #!/usr/bin/python3
 """
-script based on set_static_web.sh that distributes an
-archive to web servers
+Fabric script that generates a tgz archive from the contents of the web_static
+folder of the AirBnB Clone repo
 """
 
-from fabric.api import put, run, env
-from os.path import exists
-env.hosts = ['34.44.127.228', '34.44.206.195']
+from datetime import datetime
+from fabric.api import local
+from os.path import isdir
 
-def do_deploy(archive_path):
-    """destributes an archive to web server"""
-    if exists(archive_path):
-        return False
+
+def do_pack():
+    """generates a tgz archive"""
     try:
-        files = archive_path.split("/")[-1]
-        exten = files.split(".")[0]
-        path = "/data/web_static/releases/"
-        put(archive_path, '/tmp/')
-        run('mkdir -p {}{}/'.format(path, exten))
-        run('tar -xzf /tmp/{} -C {}{}/'.format(files, path, exten))
-        run('rm /tmp/{}'.format(files))
-        run('mv {0][1]/web_static/* {0}{1}/'.format(path, exten))
-        run('rm -rf {}{}/web_static'.format(path, exten))
-        run('rm -rf /data/web_static/current')
-        run('ln -s {}{}/ /data/web_static/current'.format(path, exten))
-        return True
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        if isdir("versions") is False:
+            local("mkdir versions")
+        file_name = "versions/web_static_{}.tgz".format(date)
+        local("tar -cvzf {} web_static".format(file_name))
+        return file_name
     except:
-        return False
+        return None
